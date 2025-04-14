@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:padding="24dp"
+
+android:background="@drawable/top_rounded_bg"
+android:orientation="vertical">
+
+
+<TextView
+    android:id="@+id/sort_title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Sort by"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    android:layout_marginBottom="16dp" />
+
+<RadioGroup
+    android:id="@+id/radioGroupSort"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+
+    <RadioButton
+        android:id="@+id/radioName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name" />
+
+    <RadioButton
+        android:id="@+id/radioPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price" />
+    <RadioButton
+        android:id="@+id/radioRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rating" />
+    <RadioButton
+        android:id="@+id/radioLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location" />
+
+
+</RadioGroup>
+<TextView
+    android:id="@+id/order_title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Order by"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    android:layout_marginBottom="16dp" />
+<RadioGroup
+    android:checkedButton="@id/radioAscending"
+    android:id="@+id/radioGroupOrder"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+
+    <RadioButton
+        android:id="@+id/radioAscending"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ascending"
+        />
+    <RadioButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/descending"
+        android:text="Descending"
+        />
+
+</RadioGroup>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="end"
+    android:layout_marginTop="24dp">
+    <Button
+        android:id="@+id/btnApply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/curve"
+        android:text="Apply"
+
+        android:layout_marginStart="16dp"/>
+</LinearLayout>
+
+</LinearLayout>

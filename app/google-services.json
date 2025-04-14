@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "946210306811",
+    "project_id": "pghunt-f68e8",
+    "storage_bucket": "pghunt-f68e8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946210306811:android:f04e4042ab7d20fcdb0e5e",
+        "android_client_info": {
+          "package_name": "com.example.learnui1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9yNZcPM6_8MEQcNepmh5vSDV7PkIrfd0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

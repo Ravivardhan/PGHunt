@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">LearnUI1</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="lorem">This is a sample review by me i think this pg doesnot have wifii
+        owner is so arrogant . I love this app BTW</string>
+</resources>

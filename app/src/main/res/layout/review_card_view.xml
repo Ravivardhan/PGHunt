@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="15dp"
+        android:id="@+id/review_card_view"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@android:color/transparent"
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/review_image"
+                app:shapeAppearanceOverlay="@style/CircularImageView"
+                android:scaleType="centerCrop"
+                android:src="@drawable/p1"
+                />
+            <LinearLayout
+                android:layout_marginHorizontal="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:id="@+id/review_name"
+                            android:textColor="@color/black"
+                            android:layout_height="wrap_content"
+                            android:text="Ravi vardhan Vangaru"
+                            android:textStyle="bold"
+                            android:textSize="15sp"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:id="@+id/review_time"
+                            android:layout_height="wrap_content"
+                            android:text="2 hrs ago"
+                            android:textColor="#980B0B0B"
+                            />
+                    </LinearLayout>
+                <TextView
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:textAlignment="textStart"
+                    android:id="@+id/review_text"
+                    android:text="@string/lorem"
+                    />
+        </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>
