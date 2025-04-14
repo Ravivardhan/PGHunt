@@ -1,11 +1,13 @@
 package com.example.learnui1.ui.home;
 
 import static androidx.core.app.ActivityCompat.requestPermissions;
+import static androidx.core.content.ContentProviderCompat.requireContext;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.icu.number.NumberFormatter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -31,17 +33,13 @@ public class Main_adapter extends RecyclerView.Adapter<Main_viewHolder> {
     ArrayList<main_pg_class> list;
     Double lat,lng;
 
-    public Main_adapter(Context context, ArrayList<main_pg_class> list,double lat,double lng) {
+    public Main_adapter(Context context, ArrayList<main_pg_class> list,Double lat,Double lng) {
         this.context = context;
         this.list = list;
         this.lat=lat;
         this.lng=lng;
     }
-    public Main_adapter(Context context,ArrayList<main_pg_class> list)
-    {
-     this.context=context;
-     this.list=list;
-    }
+
 
     @NonNull
     @Override
@@ -67,9 +65,17 @@ public class Main_adapter extends RecyclerView.Adapter<Main_viewHolder> {
         double rat=Double.parseDouble(list.get(position).getRating());
         holder.ratingBar.setRating((float)rat);
         holder.main_rating_text.setText(rat+"/5");
+        //Log.d("coordinates",list.get(position).coordinates);
 
-        Double d=DistanceCalculator.getDistanceInKm(lat,lng,list.get(position).getLatitude(),list.get(position).getLongitude());
-        holder.distance.setText(d+" KM away");
+        Double latitude=Double.parseDouble(list.get(position).getCoordinates().split(":")[0]);
+        Double longitude=Double.parseDouble(list.get(position).getCoordinates().split(":")[1]);
+        //Log.d("current cooordinates",lat+" "+lng);
+        Double d=DistanceCalculator.getDistanceInKm(lat,lng,latitude,longitude);
+        holder.distance.setText(String.format("%.2f",d)+" Km away");
+        list.get(position).distance_in_km=d;
+//        Log.d("distance",String.valueOf(d));
+
+
     }
     public void updateList(ArrayList<main_pg_class> list)
     {
@@ -80,6 +86,7 @@ public class Main_adapter extends RecyclerView.Adapter<Main_viewHolder> {
     public int getItemCount() {
         return list.size();
     }
+
 
 
 }

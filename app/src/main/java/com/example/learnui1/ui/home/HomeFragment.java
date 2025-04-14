@@ -25,6 +25,7 @@ import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.learnui1.R;
 import com.example.learnui1.databinding.FragmentHomeBinding;
+import com.example.learnui1.display_pg_details_class;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -44,8 +45,10 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     FusedLocationProviderClient fusedLocationClient;
-    Double lat,lng;
+    Double lat = 12.9716; // Default to Bangalore coordinates
+    Double lng = 77.5946;
     ArrayList<Category> category_list=new ArrayList<>();
+    ArrayList<display_pg_details_class> pg_with_category_list =new ArrayList<>();
     RecyclerView category_recyclerView,main_recycler_view;
     ImageSlider imageSlider;
     Main_adapter main_adapter;
@@ -62,6 +65,7 @@ public class HomeFragment extends Fragment {
 
 
         get_current_coordinates();
+        fetch_pg_list_with_category();
         sortBy=binding.sortBy;
         //recycler view initialization
         category_recyclerView=binding.categoryRecyclerView;
@@ -91,31 +95,12 @@ public class HomeFragment extends Fragment {
 
         // MAIN RECYCLER VIEW IMPLEMENTATION
         main_recycler_view=binding.myRecycler;
-
+        get_current_coordinates();
         main_recycler_view.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        main_adapter=new Main_adapter(getContext(),list,lat,lng);
-        main_recycler_view.setAdapter(main_adapter);
 
         //  F I R E B A S E   C O M I N G  I N       G A  M E
-        DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("PG");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
-                for(DataSnapshot dataSnapshot:snapshot.getChildren())
-                {
-                    main_pg_class mainPgClass=dataSnapshot.getValue(main_pg_class.class);
-                    list.add(mainPgClass);
-                }
-                main_adapter.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
 
         //sorting logic
@@ -165,7 +150,7 @@ public void sort_items(String selected_sort_by,String selected_sort_order_text)
         break;
         case "Rating":list.sort(Comparator.comparing(item->item.rating));
         break;
-        case "Location":list.sort(Comparator.comparing(item->item.location));
+        case "Location":list.sort(Comparator.comparing(item->item.distance_in_km));
         break;
     }
     if(selected_sort_order_text.equals("Descending"))
@@ -184,25 +169,79 @@ public void sort_items(String selected_sort_by,String selected_sort_order_text)
         binding = null;
     }
 
-    public void get_current_coordinates()
-
-    {
+    public void get_current_coordinates() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
-        // Check location permission
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Ask permission if not granted
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        } else {
-            // Get last known location
+        if (ActivityCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
             fusedLocationClient.getLastLocation()
                     .addOnSuccessListener(location -> {
                         if (location != null) {
                             lat = location.getLatitude();
                             lng = location.getLongitude();
+                            // Update adapter if it exists
+                            main_adapter = new Main_adapter(getContext(), list, lat, lng);
+                            main_recycler_view.setAdapter(main_adapter);
+                            fetchFirebaseData();
+                            if (main_adapter != null) {
+                                main_adapter.notifyDataSetChanged();
+                            }
                         }
                     });
+        } else {
+            // Request permission if not granted
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+    }
+    public void fetchFirebaseData()
+    {
+        DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("PG");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
+                for(DataSnapshot dataSnapshot:snapshot.getChildren())
+                {
+                    main_pg_class mainPgClass=dataSnapshot.getValue(main_pg_class.class);
+                    list.add(mainPgClass);
+                }
+                main_adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void fetch_pg_list_with_category()
+    {
+        pg_with_category_list.clear();
+        DatabaseReference pg_list_with_cat=FirebaseDatabase.getInstance().getReference("PG");
+        pg_list_with_cat.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot:snapshot.getChildren())
+                {
+                    display_pg_details_class pg_details_class=dataSnapshot.getValue(display_pg_details_class.class);
+                    pg_with_category_list.add(pg_details_class);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == 1 && grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            get_current_coordinates(); // Try again if permission granted
         }
     }
 }

@@ -10,6 +10,10 @@ public class display_pg_details_class {
         this.category = category;
         this.rules = rules;
     }
+    public display_pg_details_class()
+    {
+
+    }
 
     public String getPg_name() {
         return pg_name;

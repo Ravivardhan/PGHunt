@@ -1,21 +1,11 @@
 package com.example.learnui1.ui.home;
 
+import android.util.Log;
+
 public class main_pg_class {
     String main_name,location;
-    String rating;
-
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-
+    String rating,coordinates;
+    Double distance_in_km=0.0;
 
     public String getRating() {
         return rating;
@@ -26,9 +16,6 @@ public class main_pg_class {
     }
 
     String starting_price,main_image;
-    String coordinates;
-    double latitude;
-    double longitude;
     //must have empty constructor for firebase
     public main_pg_class() {
     }
@@ -39,23 +26,18 @@ public class main_pg_class {
         this.starting_price = starting_price;
         this.main_image = main_image;
         this.rating=rating;
+        //Log.d("cc",coordinates);
         this.coordinates=coordinates;
-        set_lat_lng(coordinates);
     }
-    public void set_lat_lng(String coordinates) {
-        if (coordinates != null) {
-            String[] parts = coordinates.split(":");
-            if (parts.length == 2) {
-                try {
-                    latitude = Double.parseDouble(parts[0]);
-                    longitude = Double.parseDouble(parts[1]);
-                } catch (NumberFormatException e) {
-                    latitude = 0;
-                    longitude = 0;
-                }
-            }
-        }
+
+    public String getCoordinates() {
+        return coordinates;
     }
+
+    public void setCoordinates(String coordinates) {
+        this.coordinates = coordinates;
+    }
+
     public String getMain_name() {
         return main_name;
     }

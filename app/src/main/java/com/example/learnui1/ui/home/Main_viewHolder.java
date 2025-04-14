@@ -20,6 +20,7 @@ public class Main_viewHolder extends RecyclerView.ViewHolder
 {
     ImageView main_image;
     TextView main_name,location,starting_price,main_rating_text,distance;
+    //,distance;
     RatingBar ratingBar;
 
 
@@ -31,8 +32,9 @@ public class Main_viewHolder extends RecyclerView.ViewHolder
         location=itemView.findViewById(R.id.main_location);
         starting_price=itemView.findViewById(R.id.main_starting_price);
         ratingBar=itemView.findViewById(R.id.ratingBar);
-        main_rating_text=itemView.findViewById(R.id.main_rating_text);
         distance=itemView.findViewById(R.id.distance);
+        main_rating_text=itemView.findViewById(R.id.main_rating_text);
+        //distance=itemView.findViewById(R.id.distance);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
