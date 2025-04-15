@@ -7,31 +7,83 @@
     android:layout_gravity="center"
     android:layout_marginHorizontal="20dp"
     tools:context=".ui.dashboard.DashboardFragment">
-
+    <LinearLayout
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
     <EditText
+        android:id="@+id/push_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter latitude"
-        android:id="@+id/latitute"
-        android:layout_centerInParent="true"
-
-        android:gravity="center"
+        android:hint="address"
         />
     <EditText
+        android:id="@+id/push_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter longitute"
-
-        android:layout_below="@+id/latitute"
-        android:gravity="center"
-        android:id="@+id/longitude"
+        android:hint="category"
+        />
+    <EditText
+        android:id="@+id/push_coordinates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="coordinates"
+        />
+    <EditText
+        android:id="@+id/push_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="location"
+        />
+    <EditText
+        android:id="@+id/push_main_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="main_image"
+        />
+    <EditText
+        android:id="@+id/push_main_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="main_name"
+        />
+    <EditText
+        android:id="@+id/push_owner_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="owner_name"
+        />
+    <EditText
+        android:id="@+id/push_pg_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="pg_name"
+        />
+    <EditText
+        android:id="@+id/push_rating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="rating"
+        />
+    <EditText
+        android:id="@+id/push_rules"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="rules"
+        />
+    <EditText
+        android:id="@+id/push_starting_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="starting price"
         />
     <Button
+        android:id="@+id/push_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="find Distance"
-        android:id="@+id/find_btn"
-        android:layout_below="@id/longitude"
-
+        android:text="push"
         />
+    </LinearLayout>
 </RelativeLayout>

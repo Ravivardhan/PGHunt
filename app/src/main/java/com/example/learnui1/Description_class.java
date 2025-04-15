@@ -1,21 +1,24 @@
 package com.example.learnui1;
 
 public class Description_class {
-    int description_image;
+    String description_image;
     String sharing_count,price;
+public Description_class()
+{
 
-    public Description_class(int description_image, String sharing_count, String price) {
+}
+    public Description_class(String description_image, String sharing_count, String price) {
         this.description_image = description_image;
         this.sharing_count = sharing_count;
         this.price = price;
     }
 
-    public int getDescription_image() {
+    public String getDescription_image() {
 
         return description_image;
     }
 
-    public void setDescription_image(int description_image) {
+    public void setDescription_image(String description_image) {
         this.description_image = description_image;
     }
 

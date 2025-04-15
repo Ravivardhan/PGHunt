@@ -46,7 +46,7 @@ public class Main_viewHolder extends RecyclerView.ViewHolder
                     Context context=itemView.getContext();
                     Activity activity=(Activity) context;
                     Intent i=new Intent(activity,Pg_page.class);
-                    i.putExtra("index",position);
+                    i.putExtra("pg_name",main_name.getText().toString());
                     activity.startActivity(i);
                     activity.overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left
                     );

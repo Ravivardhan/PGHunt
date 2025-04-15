@@ -1,7 +1,9 @@
 package com.example.learnui1.ui.home;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -15,11 +17,17 @@ import java.util.ArrayList;
 
 public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
     Context context;
-    ArrayList<Category> categories=new ArrayList<>();
+    private OnCategoryClickListener listener;
 
-    public CategoryRecyclerAdapter(Context context, ArrayList<Category> categories) {
+    ArrayList<Category> categories=new ArrayList<>();
+    public interface OnCategoryClickListener {
+        void onCategoryClick(String categoryName);
+    }
+
+    public CategoryRecyclerAdapter(Context context, ArrayList<Category> categories,OnCategoryClickListener listener) {
         this.context = context;
         this.categories = categories;
+        this.listener=listener;
     }
 
     @NonNull
@@ -36,6 +44,12 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryViewHo
 
                 .into(holder.category_image);
         holder.category_text.setText(categories.get(position).getCategory_name());
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onCategoryClick(categories.get(position).getCategory_name());
+            }
+        });
     }
 
     @Override

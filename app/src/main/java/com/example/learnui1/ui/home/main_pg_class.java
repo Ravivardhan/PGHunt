@@ -4,7 +4,7 @@ import android.util.Log;
 
 public class main_pg_class {
     String main_name,location;
-    String rating,coordinates;
+    String rating,coordinates,category;
     Double distance_in_km=0.0;
 
     public String getRating() {
@@ -20,7 +20,7 @@ public class main_pg_class {
     public main_pg_class() {
     }
 
-    public main_pg_class(String main_name, String location, String starting_price, String main_image,String rating,String coordinates) {
+    public main_pg_class(String main_name, String location, String starting_price, String main_image,String rating,String coordinates,String category) {
         this.main_name = main_name;
         this.location = location;
         this.starting_price = starting_price;
@@ -28,6 +28,14 @@ public class main_pg_class {
         this.rating=rating;
         //Log.d("cc",coordinates);
         this.coordinates=coordinates;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getCoordinates() {

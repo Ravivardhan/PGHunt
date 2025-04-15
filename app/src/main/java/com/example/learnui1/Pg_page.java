@@ -3,6 +3,7 @@ package com.example.learnui1;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,6 +43,7 @@ public class Pg_page extends AppCompatActivity {
     TextView display_pg_name,display_owner_name,display_rules,display_address,display_category;
     RecyclerView description_recycler;
     ImageView back_btn;
+    String unique;
     ArrayList<display_pg_details_class> display_pg_details=new ArrayList<>();
     ArrayList<Description_class> list=new ArrayList<>();
     ArrayList<SlideModel> slide_model_list=new ArrayList<>();
@@ -54,7 +56,7 @@ public class Pg_page extends AppCompatActivity {
     DatabaseReference reviewDataReference;
     StorageReference storageReference;
 
-    int index;
+    String intent_pg_name;
     @Override
     public void finish() {
         super.finish();
@@ -82,19 +84,65 @@ public class Pg_page extends AppCompatActivity {
         display_rules=findViewById(R.id.display_rules);
 
         //setting textviiews
-        index=getIntent().getIntExtra("index",0);
-        load_display_details();
+        intent_pg_name=getIntent().getStringExtra("pg_name");
+
         //set_pg_details(display_pg_details.get(index));
+        findPgByName(intent_pg_name);
 
 
 
 
 
 
+
+
+
+
+
+
+
+    }
+
+    public void findPgByName(String pgName) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("PG");
+        ref.orderByChild("main_name").equalTo(pgName)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            Log.d("FIREBASE_SEARCH", "Found " + dataSnapshot.getChildrenCount() + " PGs with name: " + pgName);
+
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                // Get the unique ID (key)
+                                String uniqueId = snapshot.getKey();
+                                Log.d("FIREBASE_SEARCH", "PG ID: " + uniqueId);
+                                unique=uniqueId;
+                                on_complete();
+                                // Log all available data
+                                for (DataSnapshot child : snapshot.getChildren()) {
+                                    Log.d("FIREBASE_SEARCH", child.getKey() + ": " + child.getValue());
+                                }
+
+
+
+                            }
+                        } else {
+                            Log.d("FIREBASE_SEARCH", "No PG found with name: " + pgName);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e("FIREBASE_SEARCH", "Error searching for PG: " + databaseError.getMessage());
+                    }
+                });
+    }
+    public void on_complete()
+    {
         load_sharing_recycler_view();
 
         // f i r e   b  a  s e
-        databaseReference = FirebaseDatabase.getInstance().getReference("PG/"+(index+1));
+        databaseReference = FirebaseDatabase.getInstance().getReference("PG/"+unique);
 
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -123,7 +171,7 @@ public class Pg_page extends AppCompatActivity {
         ImageSlider slider=findViewById(R.id.pg_page_image_slider);
 //        load_sliding_images();
         FirebaseStorage firebaseStorage= FirebaseStorage.getInstance();
-        storageReference=firebaseStorage.getReference("PG/"+(index+1));
+        storageReference=firebaseStorage.getReference("PG/"+unique);
         storageReference.listAll().addOnSuccessListener(listResult -> {
             for(StorageReference item:listResult.getItems())
             {
@@ -140,7 +188,7 @@ public class Pg_page extends AppCompatActivity {
             }
         });
 
-        reviewDataReference=FirebaseDatabase.getInstance().getReference("PG/"+(index+1)+"/reviews");
+        reviewDataReference=FirebaseDatabase.getInstance().getReference("PG/"+unique+"/reviews");
         reviewDataReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -163,12 +211,6 @@ public class Pg_page extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
-
     }
 
 
@@ -178,15 +220,7 @@ public class Pg_page extends AppCompatActivity {
         Intent i=new Intent(Pg_page.this, MainActivity.class);
         startActivity(i);
     }
-    public void load_sharing_recycler_view()
-    {
-        //sharing recycler view
-        load_sharing_details();
-        DescriptionAdapter descriptionAdapter=new DescriptionAdapter(this,list);
-        description_recycler=findViewById(R.id.descriptionRecycler);
-        description_recycler.setLayoutManager(new LinearLayoutManager(this));
-        description_recycler.setAdapter(descriptionAdapter);
-    }
+
     public void load_reviews_recycler_view()
     {
         //review recycler view
@@ -197,23 +231,46 @@ public class Pg_page extends AppCompatActivity {
         review_recycler_view.setAdapter(reviewAdapter);
     }
 
-    public void load_display_details()
-    {
-        display_pg_details.clear();
-        display_pg_details.add(new display_pg_details_class("PG1","address1","owner1","category1","rules1"));
-        display_pg_details.add(new display_pg_details_class("PG2","address2","owner2","category2","rules2"));
-        display_pg_details.add(new display_pg_details_class("PG3","address3","owner3","category3","rules3"));
-        display_pg_details.add(new display_pg_details_class("PG4","address4","owner4","category4","rules4"));
+    public void load_sharing_recycler_view() {
+        // Initialize RecyclerView and adapter first
+        description_recycler = findViewById(R.id.descriptionRecycler);
+        description_recycler.setLayoutManager(new LinearLayoutManager(this));
 
-    }
-    public void load_sharing_details()
-    {
-        list.clear();
-        //add to list to view in recycler view
-        list.add(new Description_class(R.drawable.pg1,"1 sharing","\u20B9 10,000"));
-        list.add(new Description_class(R.drawable.pg1,"2 sharing","\u20B9 8,000"));
-        list.add(new Description_class(R.drawable.pg1,"4 sharing","\u20B9 6,500"));
+        // Initialize empty list and adapter
+        list = new ArrayList<>();
+        DescriptionAdapter descriptionAdapter = new DescriptionAdapter(this, list);
+        description_recycler.setAdapter(descriptionAdapter);
 
+        // Load data from Firebase
+        DatabaseReference db1 = FirebaseDatabase.getInstance().getReference("PG/"+unique+"/description");
+        db1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear(); // Clear existing data
+
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Description_class dc = dataSnapshot.getValue(Description_class.class);
+                    if (dc != null) {
+                        list.add(dc);
+                        Log.d("FirebaseData", "Added description: " + dc.getDescription_image());
+                    }
+                }
+
+                // Notify adapter that data changed
+                descriptionAdapter.notifyDataSetChanged();
+
+                // Log all loaded items
+                for(Description_class d : list) {
+                    Log.d("LoadedData", "Price: " + d.getPrice());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("FirebaseError", "Failed to load descriptions", error.toException());
+                Toast.makeText(Pg_page.this, "Failed to load room options", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     public void set_text_views(String pg_name,String owner_name,String address,String category,String rules)
     {

@@ -5,6 +5,7 @@ import static androidx.core.content.ContentProviderCompat.requireContext;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.icu.number.NumberFormatter;
 import android.util.Log;
