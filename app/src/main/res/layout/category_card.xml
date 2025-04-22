@@ -53,4 +53,5 @@
             android:maxLines="4"/>
 
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

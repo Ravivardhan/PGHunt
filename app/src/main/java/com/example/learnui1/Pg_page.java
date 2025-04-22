@@ -2,8 +2,10 @@ package com.example.learnui1;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,6 +45,8 @@ public class Pg_page extends AppCompatActivity {
     TextView display_pg_name,display_owner_name,display_rules,display_address,display_category;
     RecyclerView description_recycler;
     ImageView back_btn;
+    Button navigation_button,call_button;
+    String coordinates,lat,lng,mobile;
     String unique;
     ArrayList<display_pg_details_class> display_pg_details=new ArrayList<>();
     ArrayList<Description_class> list=new ArrayList<>();
@@ -82,6 +86,8 @@ public class Pg_page extends AppCompatActivity {
         display_address=findViewById(R.id.display_address);
         display_category=findViewById(R.id.display_category);
         display_rules=findViewById(R.id.display_rules);
+        navigation_button=findViewById(R.id.navigation_button);
+        call_button=findViewById(R.id.call_button);
 
         //setting textviiews
         intent_pg_name=getIntent().getStringExtra("pg_name");
@@ -89,15 +95,34 @@ public class Pg_page extends AppCompatActivity {
         //set_pg_details(display_pg_details.get(index));
         findPgByName(intent_pg_name);
 
+    navigation_button.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String uri="geo:"+lat+","+lng+"?q="+lat+","+lng;
+        Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        intent.setPackage("com.google.android.apps.maps");
+        if(intent.resolveActivity(getPackageManager())!=null)
+        {
+            startActivity(intent);
+        }
+        else
+        {
+            //Toast.makeText(Pg_page.this, "gmaps not installed", Toast.LENGTH_SHORT).show();
+            Intent fallbackIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://www.google.com/maps/search/?api=1&query=" + lat + "," + lng));
+            startActivity(fallbackIntent);
+        }
+        }
+    });
 
-
-
-
-
-
-
-
-
+    call_button.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String uri="tel:"+mobile;
+            Intent intent=new Intent(Intent.ACTION_DIAL,Uri.parse(uri));
+            startActivity(intent);
+        }
+    });
 
 
 
@@ -155,7 +180,12 @@ public class Pg_page extends AppCompatActivity {
                     String db_address=snapshot.child("address").getValue(String.class);
                     String rules=snapshot.child("rules").getValue(String.class);
                     String db_category=snapshot.child("category").getValue(String.class);
+                    coordinates=snapshot.child("coordinates").getValue(String.class);
                     set_text_views(db_pg_name,db_owner_name,db_address,db_category,rules);
+                    mobile=snapshot.child("mobile").getValue(String.class);
+                    lat=coordinates.split(":")[0];
+                    lng=coordinates.split(":")[1];
+
                 }
             }
 

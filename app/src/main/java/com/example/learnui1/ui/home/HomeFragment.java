@@ -215,6 +215,8 @@ public class HomeFragment extends Fragment implements CategoryRecyclerAdapter.On
                         main_recycler_view.setAdapter(main_adapter);
 
                         // Fetch data after getting location
+
+
                         fetchFirebaseData();
                     } else {
                         Log.e("Location", "Location is null");

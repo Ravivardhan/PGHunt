@@ -1,14 +1,16 @@
 package com.example.learnui1;
 
 public class display_pg_details_class {
-    String pg_name,address,owner_name,category,rules;
+    String pg_name,address,owner_name,category,rules,coordinates,mobile;
 
-    public display_pg_details_class(String pg_name, String address, String owner_name, String category, String rules) {
+    public display_pg_details_class(String pg_name, String address, String owner_name, String category, String rules,String coordinates,String mobile) {
         this.pg_name = pg_name;
         this.address = address;
         this.owner_name = owner_name;
         this.category = category;
         this.rules = rules;
+        this.coordinates=coordinates;
+        this.mobile=mobile;
     }
     public display_pg_details_class()
     {
