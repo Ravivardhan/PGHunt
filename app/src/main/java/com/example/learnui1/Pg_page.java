@@ -1,10 +1,14 @@
 package com.example.learnui1;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,6 +28,7 @@ import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.learnui1.ui.home.HomeFragment;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -59,6 +64,8 @@ public class Pg_page extends AppCompatActivity {
     DatabaseReference databaseReference;
     DatabaseReference reviewDataReference;
     StorageReference storageReference;
+    Handler handler=new Handler();
+    Runnable showToastRunnable;
 
     String intent_pg_name;
     @Override
@@ -77,6 +84,23 @@ public class Pg_page extends AppCompatActivity {
         }
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_pg_page);
+
+        showToastRunnable=new Runnable() {
+            @Override
+            public void run() {
+                //Toast.makeText(Pg_page.this, "You have been on this page for 20seconds", Toast.LENGTH_LONG).show();
+                View view= LayoutInflater.from(Pg_page.this).inflate(R.layout.chat_opinion_bottom_sheet,null);
+                BottomSheetDialog dialog=new BottomSheetDialog(Pg_page.this);
+                dialog.setContentView(view);
+                dialog.show();
+
+            }
+        };
+        //timeout set for 10sec for testing
+        handler.postDelayed(showToastRunnable,10000);
+
+
+
         back_btn=findViewById(R.id.back_btn);
         back_btn.setOnClickListener(v->go_back());
 
@@ -232,7 +256,7 @@ public class Pg_page extends AppCompatActivity {
                     load_reviews_recycler_view();
                 }
                 else {
-                    Toast.makeText(Pg_page.this, "No Reviews available", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Pg_page.this, "No Reviews available", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -332,4 +356,10 @@ public class Pg_page extends AppCompatActivity {
 //
 //    }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+       handler.removeCallbacks(showToastRunnable);
+    }
 }
