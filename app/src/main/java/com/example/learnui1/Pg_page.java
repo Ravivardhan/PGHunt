@@ -93,6 +93,15 @@ public class Pg_page extends AppCompatActivity {
                 BottomSheetDialog dialog=new BottomSheetDialog(Pg_page.this);
                 dialog.setContentView(view);
                 dialog.show();
+                Button chat=view.findViewById(R.id.chat);
+                chat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i=new Intent(Pg_page.this,ResidentsActivity.class);
+                        i.putExtra("pg_id",unique);
+                        startActivity(i);
+                    }
+                });
 
             }
         };

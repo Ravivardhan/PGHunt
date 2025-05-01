@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -30,6 +31,9 @@ import com.example.learnui1.databinding.FragmentHomeBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,6 +60,8 @@ public class HomeFragment extends Fragment implements CategoryRecyclerAdapter.On
     private SharedPreferences sharedPreferences;
     private ArrayList<main_pg_class> list = new ArrayList<>();
     private ArrayList<main_pg_class> filteredList = new ArrayList<>();
+    FirebaseAuth mauth;
+    FirebaseUser muser;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -66,11 +72,18 @@ public class HomeFragment extends Fragment implements CategoryRecyclerAdapter.On
         // Initialize ViewModel
         new ViewModelProvider(this).get(HomeViewModel.class);
 
+
         // Initialize SharedPreferences
         sharedPreferences = requireContext().getSharedPreferences("selected_cat", MODE_PRIVATE);
         String currentCat = sharedPreferences.getString("cat", "");
         Log.d("Current Category", currentCat);
 
+        mauth=FirebaseAuth.getInstance();
+        muser=mauth.getCurrentUser();
+        if (muser==null)
+        {
+            Toast.makeText(getContext(), "Not logged in", Toast.LENGTH_LONG).show();
+        }
         // Initialize UI components
         initViews();
         setupImageSlider();

@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/curve"
         android:text="Chat now"
+        android:id="@+id/chat"
         android:layout_gravity="center"
         android:layout_marginHorizontal="30dp"
         />
